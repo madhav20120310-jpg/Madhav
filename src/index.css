@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', sans-serif;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: 'Cinzel', 'Noto Sans Tamil', serif;
+  }
+}
+
+/* Print Styles */
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #1c1917 !important;
+    font-size: 10pt !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  #root, .min-h-screen {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  /* Hide navigation, toolbars, and extraneous elements */
+  header, footer, nav, .print\:hidden {
+    display: none !important;
+  }
+
+  /* Single-page strictly for Kuripu */
+  .kuripu-print-page {
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-after: avoid !important;
+    break-inside: avoid !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Multi-page break for Jadhagam book */
+  .jadhagam-print-container {
+    display: block !important;
+    gap: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .jadhagam-page {
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .jadhagam-page:last-child {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Madhav Jodhida Nilayam - மாதவ் ஜோதிட நிலையம்",
+  "description": "Traditional Vedic Astrology, Horoscope (Jadhagam), Marriage Compatibility (Porutham), Muhurtham, Panchangam & Kundali Print Service - Tiruvannamalai.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
