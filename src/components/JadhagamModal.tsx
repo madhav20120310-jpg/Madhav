@@ -54,17 +54,11 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
   };
 
   const handlePrint = () => {
-    // Generate isolated print document and print via hidden iframe for 100% exact dimensions
-    const html = generateJadhagamBookPrintHtml(horoscope, currentLanguage, selectedFormat);
-    const result = executePrintDocument(html, `${birthData.name}_Jadhagam_${selectedFormat}.html`, false);
-    if (result.blobUrl) {
-      setLastBlobUrl(result.blobUrl);
-    }
-    setViewMode('all');
+    window.print();
     setPrintNotice(
       isTa
-        ? 'ஜாதக நூல் அச்சுக்கு அனுப்பப்பட்டது! (தேர்ந்தெடுக்கப்பட்ட தாள் அளவில் கச்சிதமாக அச்சிடப்படும்)'
-        : 'Book sent to printer in exact selected dimensions!'
+        ? 'அச்சு சாளரம் திறக்கப்பட்டது!'
+        : 'Print dialog opened!'
     );
   };
 
@@ -170,66 +164,66 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
           isLandscape ? 'p-2' : 'p-3 sm:p-4'
         }`}>
           {/* Page Top Header */}
-          <div className="flex items-center justify-between border-b border-amber-800/20 pb-1 text-[9px]">
+          <div className="flex flex-wrap items-center justify-between border-b border-amber-800/20 pb-0.5 text-[8.5px]">
             <div className="flex items-center gap-1.5">
               <img
                 src="/assets/aistudio/image_363aba76.png"
                 alt="Logo"
-                className="w-4 h-4 rounded-full object-cover"
+                className="w-3.5 h-3.5 rounded-full object-cover"
               />
               <span className="font-bold text-amber-950 font-serif">
                 {isTa ? 'மாதவ் ஜோதிட நிலையம் · திருவண்ணாமலை' : 'Madhav Jodhida Nilayam · Tiruvannamalai'}
               </span>
             </div>
-            <div className="text-right text-stone-500 font-mono text-[8.5px]">
+            <div className="text-right text-stone-500 font-mono text-[8px]">
               <span>{birthData.name}</span> · <span className="font-bold text-amber-900">{pageNo} / {totalPages}</span>
             </div>
           </div>
 
           {/* Dynamic Page Body depending on pageNo */}
-          <div className="flex-1 py-1.5 overflow-hidden flex flex-col justify-center">
+          <div className="flex-1 py-1 overflow-hidden flex flex-col justify-center">
             {/* PAGE 1: COVER & BLESSINGS */}
             {pageNo === 1 && (
               isLandscape ? (
                 /* Optimized 2-column landscape cover */
-                <div className="grid grid-cols-2 gap-4 items-center h-full px-2">
-                  <div className="text-center border-r border-amber-300 pr-3 space-y-1">
-                    <span className="text-[9px] font-bold text-amber-900 tracking-widest uppercase block">
+                <div className="grid grid-cols-2 gap-2 items-center h-full px-1">
+                  <div className="text-center border-r border-amber-300 pr-2 space-y-0.5">
+                    <span className="text-[8px] font-bold text-amber-900 tracking-wider uppercase block">
                       {isTa ? '॥ ஸ்ரீ முத்தாலம்மன் துணை ॥' : '॥ Sri Muthalamman Thunai ॥'}
                     </span>
-                    <div className="flex justify-center my-1">
+                    <div className="flex justify-center my-0.5">
                       <img
                         src="/assets/aistudio/image_363aba76.png"
                         alt="Logo"
-                        className="w-12 h-12 rounded-full border border-amber-500 shadow-sm object-cover"
+                        className="w-10 h-10 rounded-full border border-amber-500 shadow-xs object-cover"
                       />
                     </div>
-                    <h1 className="text-lg font-black text-amber-950 font-serif tracking-tight">
+                    <h1 className="text-sm font-black text-amber-950 font-serif tracking-tight">
                       {isTa ? 'மாதவ் ஜோதிட நிலையம்' : 'Madhav Jodhida Nilayam'}
                     </h1>
-                    <p className="text-[9.5px] font-bold text-amber-900">
+                    <p className="text-[8.5px] font-bold text-amber-900">
                       {isTa
                         ? 'மலமஞ்சனூர் பரம்பரை ஜோதிடர் · வாஸ்து'
                         : 'Malamanjanur Lineage · Vastu'}
                     </p>
-                    <p className="text-[8px] text-stone-600 italic">
+                    <p className="text-[7.5px] text-stone-600 italic">
                       {isTa
                         ? 'ராமச்சந்திரன் நாட்டார் · மாணிக்க நாட்டார் MR · ராமச்சந்திரன் MA'
                         : 'Hereditary Astrologers of Tiruvannamalai'}
                     </p>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <div className="py-1 px-2.5 bg-amber-100/80 rounded border border-amber-300 text-center">
-                      <span className="text-[9px] font-extrabold text-amber-950 uppercase tracking-wider block">
+                  <div className="space-y-1">
+                    <div className="py-0.5 px-2 bg-amber-100/80 rounded border border-amber-300 text-center">
+                      <span className="text-[8px] font-extrabold text-amber-950 uppercase tracking-wider block">
                         {isTa ? '— சம்பூர்ண ஜனன ஜாதக நூல் —' : '— Comprehensive Janana Book —'}
                       </span>
-                      <div className="text-sm font-black text-rose-950 mt-0.5">
+                      <div className="text-xs font-black text-rose-950 mt-0.5 truncate">
                         {birthData.name}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-1.5 text-[9.5px] bg-stone-50 p-2 rounded border border-amber-200">
+                    <div className="grid grid-cols-2 gap-1 text-[8.5px] bg-stone-50 p-1.5 rounded border border-amber-200">
                       <div>{isTa ? 'பிறந்த தேதி:' : 'DOB:'} <b>{birthData.dob}</b></div>
                       <div>{isTa ? 'பிறந்த நேரம்:' : 'TOB:'} <b>{birthData.tob}</b></div>
                       <div>{isTa ? 'பிறந்த ஊர்:' : 'Place:'} <b>{birthData.pob}</b></div>
@@ -282,40 +276,40 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
 
             {/* PAGE 2: BIRTH PANCHANGAM */}
             {pageNo === 2 && (
-              <div className={isLandscape ? "space-y-1.5" : "space-y-3"}>
-                <h3 className="font-bold text-sm text-amber-950 text-center border-b border-amber-200 pb-1 font-serif">
+              <div className={isLandscape ? "space-y-1" : "space-y-3"}>
+                <h3 className="font-bold text-xs text-amber-950 text-center border-b border-amber-200 pb-0.5 font-serif">
                   {isTa ? 'ஜனன பஞ்சாங்க அவகஹடா சக்கரம்' : 'Janma Panchangam & Avakhada Chakra'}
                 </h3>
-                <div className={`grid ${isLandscape ? 'grid-cols-6 gap-1.5 text-[9.5px]' : 'grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]'}`}>
-                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-center' : 'p-2'}`}>
-                    <span className="text-stone-500 block text-[9px]">{isTa ? 'வாரம் (கிழமை)' : 'Vaaram (Day)'}</span>
-                    <span className="font-bold text-stone-900">{isTa ? vaaram.nameTa : vaaram.name}</span>
+                <div className={`grid ${isLandscape ? 'grid-cols-6 gap-1 text-[8px]' : 'grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]'}`}>
+                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-0.5 text-center' : 'p-2'}`}>
+                    <span className="text-stone-500 block text-[7.5px]">{isTa ? 'வாரம்' : 'Day'}</span>
+                    <span className="font-bold text-stone-900 truncate block">{isTa ? vaaram.nameTa : vaaram.name}</span>
                   </div>
-                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-center' : 'p-2'}`}>
-                    <span className="text-stone-500 block text-[9px]">{isTa ? 'திதி' : 'Thithi'}</span>
+                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-0.5 text-center' : 'p-2'}`}>
+                    <span className="text-stone-500 block text-[7.5px]">{isTa ? 'திதி' : 'Thithi'}</span>
                     <span className="font-bold text-stone-900 truncate block">{isTa ? thithi.nameTa : thithi.name}</span>
                   </div>
-                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-center' : 'p-2'}`}>
-                    <span className="text-stone-500 block text-[9px]">{isTa ? 'நட்சத்திரம்' : 'Nakshatra'}</span>
+                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-0.5 text-center' : 'p-2'}`}>
+                    <span className="text-stone-500 block text-[7.5px]">{isTa ? 'நட்சத்திரம்' : 'Star'}</span>
                     <span className="font-bold text-stone-900 truncate block">{isTa ? `${nakshatra.nameTa} (${nakshatra.pada})` : `${nakshatra.name} (${nakshatra.pada})`}</span>
                   </div>
-                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-center' : 'p-2'}`}>
-                    <span className="text-stone-500 block text-[9px]">{isTa ? 'யோகம்' : 'Yoga'}</span>
+                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-0.5 text-center' : 'p-2'}`}>
+                    <span className="text-stone-500 block text-[7.5px]">{isTa ? 'யோகம்' : 'Yoga'}</span>
                     <span className="font-bold text-stone-900 truncate block">{yogam.name}</span>
                   </div>
-                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-center' : 'p-2'}`}>
-                    <span className="text-stone-500 block text-[9px]">{isTa ? 'கரணம்' : 'Karana'}</span>
+                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-0.5 text-center' : 'p-2'}`}>
+                    <span className="text-stone-500 block text-[7.5px]">{isTa ? 'கரணம்' : 'Karana'}</span>
                     <span className="font-bold text-stone-900 truncate block">{karanam.name}</span>
                   </div>
-                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-center' : 'p-2'}`}>
-                    <span className="text-stone-500 block text-[9px]">{isTa ? 'சூரிய உதயம்' : 'Sunrise'}</span>
+                  <div className={`bg-amber-50 rounded border border-amber-200 ${isLandscape ? 'p-0.5 text-center' : 'p-2'}`}>
+                    <span className="text-stone-500 block text-[7.5px]">{isTa ? 'சூரிய உதயம்' : 'Sunrise'}</span>
                     <span className="font-bold text-stone-900">06:08 AM</span>
                   </div>
                 </div>
 
-                <div className={`bg-stone-50 rounded border border-amber-200 ${isLandscape ? 'p-1.5 text-[10px]' : 'p-2.5 text-[11px]'}`}>
+                <div className={`bg-stone-50 rounded border border-amber-200 ${isLandscape ? 'p-1 text-[8.5px]' : 'p-2.5 text-[11px]'}`}>
                   <h4 className="font-bold text-amber-950 mb-0.5">{isTa ? 'நட்சத்திர அங்கங்கள் (Vedic Attributes):' : 'Star Attributes:'}</h4>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-stone-800">
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-stone-800 text-[8px]">
                     <div>{isTa ? 'கணம்:' : 'Gana:'} <b>{nakshatra.lord}</b></div>
                     <div>{isTa ? 'யோனி:' : 'Yoni:'} <b>ஆண்/பெண்</b></div>
                     <div>{isTa ? 'பூதம்:' : 'Element:'} <b>நிலம்/நீர்</b></div>
@@ -328,8 +322,8 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
             {/* PAGE 3: RASI CHART */}
             {pageNo === 3 && (
               isLandscape ? (
-                <div className="grid grid-cols-2 gap-3 items-center h-full px-2">
-                  <div className="flex justify-center">
+                <div className="grid grid-cols-2 gap-2 items-center h-full px-1">
+                  <div className="flex justify-center max-w-[210px] mx-auto">
                     <SouthIndianChart
                       title="ராசி"
                       titleSub="மாதவ் ஜோதிடம்"
@@ -337,17 +331,17 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
                       compact={true}
                     />
                   </div>
-                  <div className="space-y-1.5 text-[9.5px]">
-                    <div className="font-bold text-amber-950 font-serif border-b border-amber-200 pb-0.5 text-xs">
+                  <div className="space-y-1 text-[8.5px] leading-tight">
+                    <div className="font-bold text-amber-950 font-serif border-b border-amber-200 pb-0.5 text-[10px]">
                       {isTa ? 'ராசி சக்கரம் (D1 Janma Chakra)' : 'Rasi Chakra (D1 Janma Chakra)'}
                     </div>
-                    <div className="grid grid-cols-2 gap-1 bg-amber-50 p-1.5 rounded border border-amber-200">
+                    <div className="grid grid-cols-2 gap-1 bg-amber-50 p-1 rounded border border-amber-200 text-[8px]">
                       <div>{isTa ? 'லக்னம்:' : 'Lagna:'} <b>{isTa ? lagna.rasiNameTa : lagna.rasiName}</b></div>
                       <div>{isTa ? 'பாகை:' : 'Deg:'} <b className="font-mono">{lagna.degreeFormatted}</b></div>
                       <div>{isTa ? 'ராசி:' : 'Rasi:'} <b>{isTa ? (planets.find(p => p.name === 'Moon')?.rasiNameTa || '') : ''}</b></div>
                       <div>{isTa ? 'நட்சத்திரம்:' : 'Star:'} <b>{isTa ? nakshatra.nameTa : nakshatra.name}</b></div>
                     </div>
-                    <div className="bg-white p-1.5 rounded border border-stone-200 text-[8.5px] text-stone-700 leading-normal">
+                    <div className="bg-white p-1 rounded border border-stone-200 text-[7.5px] text-stone-700 leading-snug">
                       {isTa
                         ? 'லக்னம் முதல் 12 பாவங்களில் கிரகங்களின் அமைவிடம் கொண்டு உடல், பொருள், ஆயுள் மற்றும் பாக்கிய யோகங்கள் நிர்ணயிக்கப்படுகின்றன.'
                         : 'Planetary alignments across the 12 Bhavas govern native longevity, prosperity, and career.'}
@@ -377,8 +371,8 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
             {/* PAGE 4: NAVAMSA CHART */}
             {pageNo === 4 && (
               isLandscape ? (
-                <div className="grid grid-cols-2 gap-3 items-center h-full px-2">
-                  <div className="flex justify-center">
+                <div className="grid grid-cols-2 gap-2 items-center h-full px-1">
+                  <div className="flex justify-center max-w-[210px] mx-auto">
                     <SouthIndianChart
                       title="நவாம்சம்"
                       titleSub="மாதவ் ஜோதிடம்"
@@ -386,16 +380,16 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
                       compact={true}
                     />
                   </div>
-                  <div className="space-y-1.5 text-[9.5px]">
-                    <div className="font-bold text-amber-950 font-serif border-b border-amber-200 pb-0.5 text-xs">
+                  <div className="space-y-1 text-[8.5px] leading-tight">
+                    <div className="font-bold text-amber-950 font-serif border-b border-amber-200 pb-0.5 text-[10px]">
                       {isTa ? 'நவாம்ச சக்கரம் (D9 Navamsa Chakra)' : 'Navamsa Chakra (D9 Navamsa Chakra)'}
                     </div>
-                    <div className="bg-amber-50 p-1.5 rounded border border-amber-200 text-[8.5px] text-stone-800 leading-normal">
+                    <div className="bg-amber-50 p-1 rounded border border-amber-200 text-[8px] text-stone-800 leading-snug">
                       {isTa
                         ? 'நவாம்ச சக்கரம் தாம்பத்திய சுகம், களத்திர யோகம் மற்றும் கிரகங்களின் சூட்சும பலத்தை உணர்த்துகிறது. வர்க்கோத்தம கிரகங்கள் விசேஷ யோகம் தரும்.'
                         : 'Navamsa chart reveals subtle marital harmony, spiritual path, and vargottama planet strengths.'}
                     </div>
-                    <div className="bg-white p-1.5 rounded border border-stone-200 text-[8.5px] text-stone-700 leading-normal">
+                    <div className="bg-white p-1 rounded border border-stone-200 text-[7.5px] text-stone-700 leading-snug">
                       {isTa
                         ? 'களத்திர ஸ்தானத்தில் சுபகிரக தொடர்பு ஏற்பட்டு இல்லற மேன்மையும் நற்குடும்ப அமைப்பும் கிட்டும்.'
                         : 'Auspicious Kalathra bhava connections indicate strong domestic blessings.'}
@@ -424,38 +418,38 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
 
             {/* PAGE 5: PLANETARY LONGITUDES */}
             {pageNo === 5 && (
-              <div className="space-y-2">
-                <h3 className="font-bold text-sm text-amber-950 text-center border-b border-amber-200 pb-1 font-serif">
+              <div className="space-y-1">
+                <h3 className="font-bold text-xs text-amber-950 text-center border-b border-amber-200 pb-0.5 font-serif">
                   {isTa ? 'கிரக பாதசார விரிவு அட்டவணை' : 'Detailed Planetary Longitudes'}
                 </h3>
-                <table className="w-full text-left text-[10px] border border-amber-800/30">
+                <table className="w-full text-left text-[8px] border border-amber-800/30">
                   <thead className="bg-amber-100/70 font-bold text-amber-950">
                     <tr>
-                      <th className="p-1">{isTa ? 'கிரகம்' : 'Planet'}</th>
-                      <th className="p-1">{isTa ? 'ராசி' : 'Rasi'}</th>
-                      <th className="p-1">{isTa ? 'பாகை' : 'Degree'}</th>
-                      <th className="p-1">{isTa ? 'நட்சத்திரம்' : 'Star'}</th>
-                      <th className="p-1">{isTa ? 'பாதம்' : 'Pada'}</th>
-                      <th className="p-1">{isTa ? 'ஸ்தான பலம்' : 'Dignity'}</th>
+                      <th className="p-0.5">{isTa ? 'கிரகம்' : 'Planet'}</th>
+                      <th className="p-0.5">{isTa ? 'ராசி' : 'Rasi'}</th>
+                      <th className="p-0.5">{isTa ? 'பாகை' : 'Degree'}</th>
+                      <th className="p-0.5">{isTa ? 'நட்சத்திரம்' : 'Star'}</th>
+                      <th className="p-0.5">{isTa ? 'பாதம்' : 'Pada'}</th>
+                      <th className="p-0.5">{isTa ? 'ஸ்தான பலம்' : 'Dignity'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-amber-100">
                     <tr className="bg-amber-50 font-bold text-rose-950">
-                      <td className="p-1">{isTa ? 'லக்னம்' : 'Lagna'}</td>
-                      <td className="p-1">{isTa ? lagna.rasiNameTa : lagna.rasiName}</td>
-                      <td className="p-1 font-mono">{lagna.degreeFormatted}</td>
-                      <td className="p-1">{isTa ? lagna.nakshatraNameTa : lagna.nakshatraName}</td>
-                      <td className="p-1">{lagna.pada}</td>
-                      <td className="p-1">கேந்திராதிபதி</td>
+                      <td className="p-0.5">{isTa ? 'லக்னம்' : 'Lagna'}</td>
+                      <td className="p-0.5">{isTa ? lagna.rasiNameTa : lagna.rasiName}</td>
+                      <td className="p-0.5 font-mono">{lagna.degreeFormatted}</td>
+                      <td className="p-0.5">{isTa ? lagna.nakshatraNameTa : lagna.nakshatraName}</td>
+                      <td className="p-0.5">{lagna.pada}</td>
+                      <td className="p-0.5">கேந்திராதிபதி</td>
                     </tr>
                     {planets.map((p) => (
                       <tr key={p.name}>
-                        <td className="p-1 font-semibold">{isTa ? p.nameTa : p.name}</td>
-                        <td className="p-1">{isTa ? p.rasiNameTa : p.rasiName}</td>
-                        <td className="p-1 font-mono">{p.degreeFormatted}</td>
-                        <td className="p-1">{isTa ? p.nakshatraNameTa : p.nakshatraName}</td>
-                        <td className="p-1">{p.pada}</td>
-                        <td className="p-1 font-medium">{isTa ? p.avasthaTa : p.avastha}</td>
+                        <td className="p-0.5 font-semibold">{isTa ? p.nameTa : p.name}</td>
+                        <td className="p-0.5">{isTa ? p.rasiNameTa : p.rasiName}</td>
+                        <td className="p-0.5 font-mono">{p.degreeFormatted}</td>
+                        <td className="p-0.5">{isTa ? p.nakshatraNameTa : p.nakshatraName}</td>
+                        <td className="p-0.5">{p.pada}</td>
+                        <td className="p-0.5 font-medium">{isTa ? p.avasthaTa : p.avastha}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -465,26 +459,26 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
 
             {/* PAGE 6: DASA BALANCE AT BIRTH */}
             {pageNo === 6 && (
-              <div className="space-y-3">
-                <h3 className="font-bold text-sm text-amber-950 text-center border-b border-amber-200 pb-1 font-serif">
+              <div className={isLandscape ? "space-y-1.5" : "space-y-3"}>
+                <h3 className="font-bold text-xs text-amber-950 text-center border-b border-amber-200 pb-0.5 font-serif">
                   {isTa ? 'பிறந்த இருப்பு தசாபுத்தி கணக்கீடு' : 'Janma Dasa Balance at Birth'}
                 </h3>
-                <div className="p-3 bg-amber-50 rounded-lg border border-amber-300">
-                  <div className="text-sm font-extrabold text-amber-950">
+                <div className={`bg-amber-50 rounded border border-amber-300 ${isLandscape ? 'p-1.5' : 'p-3'}`}>
+                  <div className={`font-extrabold text-amber-950 ${isLandscape ? 'text-xs' : 'text-sm'}`}>
                     {isTa
                       ? `${dasaBalance.lordTa} மகா தசை இருப்பு:`
                       : `${dasaBalance.lord} Dasa Balance:`}
                   </div>
-                  <div className="text-base font-black text-rose-900 mt-1">
+                  <div className={`font-black text-rose-900 mt-0.5 ${isLandscape ? 'text-sm' : 'text-base'}`}>
                     {dasaBalance.years} {isTa ? 'வருடம்' : 'Years'}, {dasaBalance.months} {isTa ? 'மாதம்' : 'Months'}, {dasaBalance.days} {isTa ? 'நாட்கள்' : 'Days'}
                   </div>
-                  <p className="text-[11px] text-stone-600 mt-1">
+                  <p className={`text-stone-600 mt-0.5 ${isLandscape ? 'text-[8px]' : 'text-[11px]'}`}>
                     {isTa ? 'தசை ஆரம்ப தேதி:' : 'Start Date:'} {dasaBalance.startDate} · {isTa ? 'முடிவு தேதி:' : 'End Date:'} {dasaBalance.endDate}
                   </p>
                 </div>
 
-                <div className="text-[11px] text-stone-800 leading-relaxed bg-white p-3 rounded border border-amber-200">
-                  <h4 className="font-bold text-amber-950 mb-1">{isTa ? 'விம்சோத்தரி தசா முறை விளக்கம்:' : 'Vimshottari System Overview:'}</h4>
+                <div className={`text-stone-800 leading-tight bg-white rounded border border-amber-200 ${isLandscape ? 'p-1.5 text-[8px]' : 'p-3 text-[11px]'}`}>
+                  <h4 className="font-bold text-amber-950 mb-0.5">{isTa ? 'விம்சோத்தரி தசா முறை விளக்கம்:' : 'Vimshottari System Overview:'}</h4>
                   <p>
                     {isTa
                       ? 'மனித வாழ்வின் ஆயுள் 120 வருடங்களாக கணிக்கப்பட்டு ஒன்பது கிரகங்களுக்கு விம்சோத்தரி முறையில் பிரிக்கப்பட்டுள்ளது. பிறந்த நட்சத்திரத்தின் அடிப்படையில் முதல் தசை அமைகிறது.'
@@ -639,35 +633,35 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
 
             {/* PAGE 35: FINAL SEAL & BLESSINGS */}
             {pageNo === 35 && (
-              <div className={`text-center ${isLandscape ? 'space-y-1.5' : 'space-y-4'}`}>
-                <span className="text-xs font-bold text-amber-900 tracking-widest uppercase">
+              <div className={`text-center ${isLandscape ? 'space-y-1' : 'space-y-4'}`}>
+                <span className="text-[9.5px] font-bold text-amber-900 tracking-widest uppercase">
                   {isTa ? '॥ சுபம் பூயாத் - மங்களம் உண்டாகுக ॥' : '॥ Shubham Bhavatu ॥'}
                 </span>
 
-                <div className={`bg-amber-50 rounded-xl border-2 border-amber-800/40 max-w-md mx-auto text-stone-800 ${isLandscape ? 'p-2 text-[10px] space-y-1' : 'p-4 text-[11px] space-y-2'}`}>
-                  <p className="font-serif font-bold text-sm text-amber-950">
+                <div className={`bg-amber-50 rounded border border-amber-800/40 max-w-md mx-auto text-stone-800 ${isLandscape ? 'p-1.5 text-[8.5px] space-y-0.5' : 'p-4 text-[11px] space-y-2'}`}>
+                  <p className="font-serif font-bold text-xs text-amber-950">
                     {isTa ? 'மாதவ் ஜோதிட நிலைய சான்றளிப்பு' : 'Madhav Jodhida Nilayam Certification'}
                   </p>
-                  <p>
+                  <p className="leading-snug">
                     {isTa
                       ? 'இந்த ஜாதக நூல் பாரம்பரிய மலமஞ்சனூர் வாக்கிய மற்றும் திருக்கணித பஞ்சாங்க கணித முறைப்படி துல்லியமாக கணிக்கப்பட்டு ஆசி வழங்கப்பட்டுள்ளது.'
                       : 'Computed and certified according to authentic traditional Vedic astrology principles.'}
                   </p>
                 </div>
 
-                <div className={`flex items-center justify-around max-w-md mx-auto text-center ${isLandscape ? 'pt-1' : 'pt-4'}`}>
+                <div className={`flex flex-wrap items-center justify-around max-w-md mx-auto text-center ${isLandscape ? 'pt-0.5' : 'pt-4'}`}>
                   <div>
-                    <div className={`rounded-full border-2 border-dashed border-amber-700 mx-auto flex items-center justify-center font-bold text-amber-900 p-1 ${isLandscape ? 'w-10 h-10 text-[8px]' : 'w-16 h-16 text-[9px]'}`}>
-                      முத்திரை / SEAL
+                    <div className={`rounded-full border border-dashed border-amber-700 mx-auto flex items-center justify-center font-bold text-amber-900 p-0.5 ${isLandscape ? 'w-8 h-8 text-[7px]' : 'w-16 h-16 text-[9px]'}`}>
+                      முத்திரை
                     </div>
-                    <span className="text-[9px] text-stone-600 mt-0.5 block">மாதவ் ஜோதிட நிலையம்</span>
+                    <span className="text-[7.5px] text-stone-600 block">மாதவ் ஜோதிடம்</span>
                   </div>
 
                   <div>
-                    <div className={`flex items-end justify-center font-serif italic text-amber-950 font-bold ${isLandscape ? 'h-7 text-xs' : 'h-12 text-sm'}`}>
+                    <div className={`flex items-end justify-center font-serif italic text-amber-950 font-bold ${isLandscape ? 'h-5 text-[10px]' : 'h-12 text-sm'}`}>
                       ராமச்சந்திரன் MA
                     </div>
-                    <span className="text-[9px] text-stone-700 block border-t border-stone-400 pt-0.5 px-3">
+                    <span className="text-[7.5px] text-stone-700 block border-t border-stone-400 pt-0.5 px-2">
                       {isTa ? 'ஜோதிட ஆலோசகர் கையொப்பம்' : 'Astrologer Signature'}
                     </span>
                   </div>
@@ -677,7 +671,7 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
           </div>
 
           {/* Page Bottom Footer */}
-          <div className="flex items-center justify-between border-t border-amber-800/20 pt-1 text-[9px] text-stone-500">
+          <div className="flex flex-wrap items-center justify-between border-t border-amber-800/20 pt-0.5 text-[8px] text-stone-500">
             <span>{isTa ? 'செல்: 90429 24345, 90435 15667' : 'Cell: 90429 24345, 90435 15667'}</span>
             <span>{isTa ? 'மலமஞ்சனூர் பரம்பரை ஜோதிடம்' : 'Malamanjanur Hereditary Astrology'}</span>
           </div>
@@ -716,7 +710,7 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
               } !important;
               margin: ${
                 selectedFormat === '35_a5_landscape'
-                  ? '3mm 4mm'
+                  ? '10mm'
                   : selectedFormat === '35_a5_portrait'
                   ? '4mm 4mm'
                   : '5mm 6mm'
@@ -735,10 +729,10 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
             }
 
             .jadhagam-page-a5-landscape {
-              width: 202mm !important;
-              height: 141mm !important;
-              max-height: 141mm !important;
-              min-height: 141mm !important;
+              width: 190mm !important;
+              height: 128mm !important;
+              max-height: 128mm !important;
+              min-height: 128mm !important;
               page-break-after: always !important;
               break-after: page !important;
               page-break-inside: avoid !important;
@@ -960,14 +954,21 @@ export const JadhagamModal: React.FC<JadhagamModalProps> = ({
           </div>
         )}
 
-        {/* PRINT / PREVIEW CONTAINER */}
-        <div className="jadhagam-print-container p-4 sm:p-6 max-h-[75vh] overflow-y-auto flex flex-col items-center gap-6 bg-stone-950/70 print:block print:p-0 print:m-0 print:gap-0 print:max-h-none print:overflow-visible print:bg-white">
+        {/* SCREEN PREVIEW CONTAINER (Hidden during printing) */}
+        <div className="jadhagam-screen-container p-4 sm:p-6 max-h-[75vh] overflow-y-auto flex flex-col items-center gap-6 bg-stone-950/70 print:hidden">
           {viewMode === 'single' ? (
             renderPageContent(currentPage)
           ) : (
             Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) =>
               renderPageContent(pageNum)
             )
+          )}
+        </div>
+
+        {/* DEDICATED PRINT CONTAINER (Hidden on screen, rendered cleanly for print) */}
+        <div className="hidden print:block jadhagam-print-container">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) =>
+            renderPageContent(pageNum)
           )}
         </div>
 

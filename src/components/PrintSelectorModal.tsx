@@ -25,12 +25,11 @@ export const PrintSelectorModal: React.FC<PrintSelectorModalProps> = ({
   const [lastBlobUrl, setLastBlobUrl] = useState<string>('');
 
   const handleInstantPrint = () => {
-    const html = generateKuripuPrintHtml(horoscope, currentLanguage);
-    const result = executePrintDocument(html, `${horoscope.birthData.name}_Kuripu_1Page.html`, false);
-    if (result.blobUrl) {
-      setLastBlobUrl(result.blobUrl);
-    }
-    setPrintFeedback(isTa ? '1-பக்க அச்சு சாளரம் திறக்கப்பட்டது!' : '1-Page print dialog triggered!');
+    onClose();
+    onSelectKuripu();
+    setTimeout(() => {
+      window.print();
+    }, 150);
   };
 
   const handleOpenNewTab = () => {

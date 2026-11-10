@@ -21,11 +21,7 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
   const [lastBlobUrl, setLastBlobUrl] = useState<string>('');
 
   const handlePrint = () => {
-    const html = generateKuripuPrintHtml(horoscope, currentLanguage);
-    const result = executePrintDocument(html, `${birthData.name}_Kuripu_1Page.html`, false);
-    if (result.blobUrl) {
-      setLastBlobUrl(result.blobUrl);
-    }
+    window.print();
     setPrintStatus(isTa ? '1-பக்க அச்சு சாளரம் திறக்கப்பட்டது!' : '1-Page print dialog triggered!');
   };
 
@@ -67,7 +63,7 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
           @media print {
             @page {
               size: A4 portrait !important;
-              margin: 4mm 5mm 4mm 5mm !important;
+              margin: 8mm 10mm 8mm 10mm !important;
             }
             html, body {
               margin: 0 !important;
@@ -76,6 +72,8 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
               color: #1c1917 !important;
               overflow: hidden !important;
               height: 100% !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
             }
             .kuripu-modal-wrapper {
               position: static !important;
@@ -87,12 +85,13 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
               background: #ffffff !important;
             }
             .kuripu-print-page {
-              width: 198mm !important;
-              max-width: 198mm !important;
-              height: 288mm !important;
-              max-height: 288mm !important;
+              width: 100% !important;
+              max-width: 188mm !important;
+              min-height: 270mm !important;
+              height: 270mm !important;
+              max-height: 270mm !important;
               margin: 0 auto !important;
-              padding: 3mm 4mm !important;
+              padding: 4mm 5mm !important;
               page-break-after: avoid !important;
               page-break-before: avoid !important;
               page-break-inside: avoid !important;
@@ -109,6 +108,7 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
               display: flex !important;
               flex-direction: column !important;
               justify-content: space-between !important;
+              box-sizing: border-box !important;
             }
           }
         `}</style>
@@ -212,9 +212,9 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
         </div>
 
         {/* PRINTABLE SINGLE PAGE CONTAINER */}
-        <div className="kuripu-print-page p-3 sm:p-5 bg-amber-50/15 text-stone-900 text-xs font-sans print:p-2 print:text-[10px] print:bg-white print:leading-tight">
+        <div className="kuripu-print-page p-3 sm:p-5 bg-amber-50/15 text-stone-900 text-xs font-sans print:p-0 print:text-[10px] print:bg-white print:leading-tight">
           {/* Traditional Border Frame */}
-          <div className="border-2 border-amber-900/60 p-3 sm:p-4 rounded-xl bg-white relative">
+          <div className="kuripu-frame border-2 border-amber-900/60 p-3 sm:p-4 rounded-xl bg-white relative flex flex-col justify-between h-full">
             {/* Header / Lineage Seal */}
             <div className="text-center pb-2 border-b-2 border-amber-800/40 relative">
               <div className="text-[10px] font-bold text-amber-900 tracking-widest uppercase">
@@ -307,7 +307,7 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
                 <SouthIndianChart
                   title="ராசி"
                   planetsByRasi={rasiChart}
-                  compact={true}
+                  size="medium"
                 />
               </div>
 
@@ -318,7 +318,7 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
                 <SouthIndianChart
                   title="நவாம்சம்"
                   planetsByRasi={navamsaChart}
-                  compact={true}
+                  size="medium"
                 />
               </div>
             </div>
@@ -326,36 +326,47 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
             {/* Planetary Table & Dasa Balance 2-Column Split */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-amber-800/20">
               {/* Planetary Longitude Table */}
-              <div>
-                <div className="font-bold text-[11px] text-amber-950 mb-1">
-                  {isTa ? 'கிரக நிலைகள் (Nirayana Longitudes)' : 'Planetary Positions'}
-                </div>
-                <table className="w-full text-left text-[10px] border border-amber-800/30">
-                  <thead className="bg-amber-100/70 font-semibold text-amber-950">
-                    <tr>
-                      <th className="p-0.5 px-1">{isTa ? 'கிரகம்' : 'Planet'}</th>
-                      <th className="p-0.5 px-1">{isTa ? 'ராசி' : 'Rasi'}</th>
-                      <th className="p-0.5 px-1">{isTa ? 'பாகை' : 'Deg'}</th>
-                      <th className="p-0.5 px-1">{isTa ? 'நட்சத்திரம்' : 'Star'}</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-amber-100">
-                    <tr className="bg-amber-50 font-bold text-rose-950">
-                      <td className="p-0.5 px-1">{isTa ? 'லக்னம்' : 'Lagna'}</td>
-                      <td className="p-0.5 px-1">{isTa ? lagna.rasiNameTa : lagna.rasiName}</td>
-                      <td className="p-0.5 px-1 font-mono">{lagna.degreeFormatted}</td>
-                      <td className="p-0.5 px-1">{isTa ? `${lagna.nakshatraNameTa}-${lagna.pada}` : `${lagna.nakshatraName}-${lagna.pada}`}</td>
-                    </tr>
-                    {planets.map((p) => (
-                      <tr key={p.name}>
-                        <td className="p-0.5 px-1 font-medium">{isTa ? p.nameTa : p.name}</td>
-                        <td className="p-0.5 px-1">{isTa ? p.rasiNameTa : p.rasiName}</td>
-                        <td className="p-0.5 px-1 font-mono">{p.degreeFormatted}</td>
-                        <td className="p-0.5 px-1">{isTa ? `${p.nakshatraNameTa}-${p.pada}` : `${p.nakshatraName}-${p.pada}`}</td>
+              <div className="flex flex-col justify-between">
+                <div>
+                  <div className="font-bold text-[11px] text-amber-950 mb-1">
+                    {isTa ? 'கிரக நிலைகள் (Nirayana Longitudes)' : 'Planetary Positions'}
+                  </div>
+                  <table className="w-full text-left text-[10px] border border-amber-800/30">
+                    <thead className="bg-amber-100/70 font-semibold text-amber-950">
+                      <tr>
+                        <th className="p-0.5 px-1">{isTa ? 'கிரகம்' : 'Planet'}</th>
+                        <th className="p-0.5 px-1">{isTa ? 'ராசி' : 'Rasi'}</th>
+                        <th className="p-0.5 px-1">{isTa ? 'பாகை' : 'Deg'}</th>
+                        <th className="p-0.5 px-1">{isTa ? 'நட்சத்திரம்' : 'Star'}</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-amber-100">
+                      <tr className="bg-amber-50 font-bold text-rose-950">
+                        <td className="p-0.5 px-1">{isTa ? 'லக்னம்' : 'Lagna'}</td>
+                        <td className="p-0.5 px-1">{isTa ? lagna.rasiNameTa : lagna.rasiName}</td>
+                        <td className="p-0.5 px-1 font-mono">{lagna.degreeFormatted}</td>
+                        <td className="p-0.5 px-1">{isTa ? `${lagna.nakshatraNameTa}-${lagna.pada}` : `${lagna.nakshatraName}-${lagna.pada}`}</td>
+                      </tr>
+                      {planets.map((p) => (
+                        <tr key={p.name}>
+                          <td className="p-0.5 px-1 font-medium">{isTa ? p.nameTa : p.name}</td>
+                          <td className="p-0.5 px-1">{isTa ? p.rasiNameTa : p.rasiName}</td>
+                          <td className="p-0.5 px-1 font-mono">{p.degreeFormatted}</td>
+                          <td className="p-0.5 px-1">{isTa ? `${p.nakshatraNameTa}-${p.pada}` : `${p.nakshatraName}-${p.pada}`}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="bg-amber-50/80 border border-amber-300/80 rounded p-2 text-[9px] text-amber-950 mt-2">
+                  <span className="font-bold block text-amber-900">{isTa ? 'மாதவ் வழிகாட்டுதல்:' : 'Guidance:'}</span>
+                  <p className="leading-snug mt-0.5">
+                    {isTa
+                      ? 'லக்னாதிபதி பலம் பெற்று சுப யோகங்கள் அமைந்துள்ளதால் சகல நன்மைகளும் கூடும். குலதெய்வ வழிபாடு மற்றும் திருவண்ணாமலை கிரிவல தரிசனம் சகல தோஷ நிவர்த்தி தரும்.'
+                      : 'Strong planetary alignments indicate domestic harmony and prosperity.'}
+                  </p>
+                </div>
               </div>
 
               {/* Dasa Balance & Quick Prediction Highlights */}
@@ -393,16 +404,19 @@ export const KuripuModal: React.FC<KuripuModalProps> = ({
                 {/* Astrologer Signature & Seal Box */}
                 <div className="border border-dashed border-amber-800/40 p-2 rounded text-center flex items-center justify-between">
                   <div className="text-left text-[9px] text-stone-600">
-                    <span>{isTa ? 'கணித்த இடம்: திருவண்ணாமலை' : 'Place: Tiruvannamalai'}</span>
+                    <span className="font-bold text-stone-800">மாதவ் ஜோதிட நிலையம்</span>
                     <br />
-                    <span>{isTa ? 'மாதவ் ஜோதிட நிலையம்' : 'Madhav Jodhida Nilayam'}</span>
+                    <span>மலமஞ்சனூர் பரம்பரை · திருவண்ணாமலை</span>
+                  </div>
+                  <div className="border border-dashed border-amber-800 rounded-full w-9 h-9 flex items-center justify-center text-[7px] font-bold text-amber-900">
+                    முத்திரை
                   </div>
                   <div className="text-center">
-                    <div className="h-6 flex items-end justify-center font-serif italic text-amber-950 font-bold text-xs">
-                      ஜோதிட ஆலோசகர்
+                    <div className="h-5 flex items-end justify-center font-serif italic text-amber-950 font-bold text-xs">
+                      ராமச்சந்திரன் MA
                     </div>
                     <span className="text-[9px] text-stone-700 block border-t border-stone-400 pt-0.5 px-2">
-                      {isTa ? 'ஜோதிட வல்லுநர் கையொப்பம்' : 'Astrologer Signature'}
+                      {isTa ? 'ஜோதிட வல்லுநர்' : 'Astrologer'}
                     </span>
                   </div>
                 </div>

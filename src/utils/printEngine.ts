@@ -50,9 +50,9 @@ function renderSouthIndianChartHtml(
       // Only render center once for i === 5
       if (i === 5) {
         cellsHtml += `
-          <div style="grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fffbeb; border: 1px solid #b45309; text-align: center; padding: ${compact ? '2px' : '4px'};">
-            <div style="font-weight: 800; font-size: ${compact ? '11px' : '13px'}; color: #78350f;">${title}</div>
-            <div style="font-size: ${compact ? '7.5px' : '8.5px'}; color: #92400e; margin-top: 1px;">மாதவ் ஜோதிடம்</div>
+          <div style="grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #fffbeb; border: 1.5px solid #b45309; text-align: center; padding: ${compact ? '2px' : '4px'};">
+            <div style="font-weight: 800; font-size: ${compact ? '10px' : '13px'}; color: #78350f; font-family: serif;">${title}</div>
+            <div style="font-size: ${compact ? '7.5px' : '9px'}; font-weight: 700; color: #92400e; margin-top: 1px;">மாதவ் ஜோதிடம்</div>
           </div>
         `;
       }
@@ -65,23 +65,23 @@ function renderSouthIndianChartHtml(
 
     const occupantsHtml = occupants.map(p => {
       if (p.isLagna) {
-        return `<span style="display: inline-block; background: #fef2f2; color: #991b1b; font-weight: 800; padding: 1px 2px; border-radius: 2px; border: 1px solid #f87171; font-size: 8px; margin: 1px;">${isTa ? 'லக்' : 'Lag'}</span>`;
+        return `<span style="display: inline-block; background: #fee2e2; color: #991b1b; font-weight: 800; padding: ${compact ? '0.5px 2px' : '1px 3px'}; border-radius: 2px; border: 1px solid #f87171; font-size: ${compact ? '7px' : '9px'}; margin: 1px;">${isTa ? 'லக்' : 'Lag'}</span>`;
       }
       const label = isTa ? p.nameTa : p.name;
       const retro = p.isRetrograde ? '(வ)' : '';
-      return `<span style="display: inline-block; background: #fef3c7; color: #78350f; font-weight: 700; padding: 1px 2px; border-radius: 2px; border: 1px solid #f59e0b; font-size: 8px; margin: 1px;">${label}${retro}</span>`;
+      return `<span style="display: inline-block; background: #fef3c7; color: #78350f; font-weight: 700; padding: ${compact ? '0.5px 2px' : '1px 3px'}; border-radius: 2px; border: 1px solid #f59e0b; font-size: ${compact ? '7px' : '9px'}; margin: 1px;">${label}${retro}</span>`;
     }).join(' ');
 
     cellsHtml += `
-      <div style="border: 1px solid #b45309; padding: ${compact ? '1px 2px' : '2px 4px'}; min-height: ${compact ? '36px' : '44px'}; background: #ffffff; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden;">
-        <div style="font-size: 7.5px; font-weight: 700; color: #9ca3af; border-bottom: 1px dotted #e5e7eb; padding-bottom: 0.5px; margin-bottom: 1px;">${rasiTitle}</div>
+      <div style="border: 1px solid #b45309; padding: ${compact ? '1px 2px' : '2px 4px'}; min-height: ${compact ? '28px' : '46px'}; background: #ffffff; display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden;">
+        <div style="font-size: ${compact ? '7px' : '8.5px'}; font-weight: 700; color: #78716c; border-bottom: 1px dotted #e5e7eb; padding-bottom: 0.5px; margin-bottom: 1px;">${rasiTitle}</div>
         <div style="display: flex; flex-wrap: wrap; gap: 1px;">${occupantsHtml}</div>
       </div>
     `;
   }
 
   return `
-    <div style="border: 1.5px solid #78350f; background: #fff; width: 100%; max-width: ${compact ? '280px' : '360px'}; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 0;">
+    <div style="border: 1.5px solid #78350f; background: #fff; width: 100%; max-width: ${compact ? '205px' : '335px'}; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(4, 1fr); gap: 0;">
       ${cellsHtml}
     </div>
   `;
@@ -94,23 +94,23 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
   const isTa = language === 'ta';
   const { birthData, lagna, planets, rasiChart, navamsaChart, thithi, nakshatra, dasaBalance, currentDasaBukthi, luckyFactors } = horoscope;
 
-  // Render both charts in compact mode (max-width 280px, height ~146px) so it strictly fits 1 page
-  const rasiChartHtml = renderSouthIndianChartHtml(isTa ? 'ராசி சக்கரம்' : 'Rasi Chart', rasiChart, language, true);
-  const navamsaChartHtml = renderSouthIndianChartHtml(isTa ? 'நவாம்சம்' : 'Navamsa Chart', navamsaChart, language, true);
+  // Render both charts in standard mode (335px wide, 46px min cell height) so it fills the A4 page prominently
+  const rasiChartHtml = renderSouthIndianChartHtml(isTa ? 'ராசி சக்கரம்' : 'Rasi Chart', rasiChart, language, false);
+  const navamsaChartHtml = renderSouthIndianChartHtml(isTa ? 'நவாம்சம்' : 'Navamsa Chart', navamsaChart, language, false);
 
   const planetRowsHtml = [
     `<tr>
-      <td style="padding: 1.5px 3px; font-weight: 800; color: #991b1b;">${isTa ? 'லக்னம்' : 'Lagna'}</td>
-      <td style="padding: 1.5px 3px;">${isTa ? lagna.rasiNameTa : lagna.rasiName}</td>
-      <td style="padding: 1.5px 3px; font-family: monospace;">${lagna.degreeFormatted}</td>
-      <td style="padding: 1.5px 3px;">${isTa ? lagna.nakshatraNameTa : lagna.nakshatraName}-${lagna.pada}</td>
+      <td style="padding: 2.5px 4px; font-weight: 800; color: #991b1b; background: #fee2e2;">${isTa ? 'லக்னம்' : 'Lagna'}</td>
+      <td style="padding: 2.5px 4px; font-weight: 700;">${isTa ? lagna.rasiNameTa : lagna.rasiName}</td>
+      <td style="padding: 2.5px 4px; font-family: monospace; font-weight: 700;">${lagna.degreeFormatted}</td>
+      <td style="padding: 2.5px 4px;">${isTa ? lagna.nakshatraNameTa : lagna.nakshatraName}-${lagna.pada}</td>
     </tr>`,
     ...planets.map(p => `
       <tr>
-        <td style="padding: 1.5px 3px; font-weight: 700; color: #1c1917;">${isTa ? p.nameTa : p.name}${p.isRetrograde ? ' (வ)' : ''}</td>
-        <td style="padding: 1.5px 3px;">${isTa ? p.rasiNameTa : p.rasiName}</td>
-        <td style="padding: 1.5px 3px; font-family: monospace;">${p.degreeFormatted}</td>
-        <td style="padding: 1.5px 3px;">${isTa ? p.nakshatraNameTa : p.nakshatraName}-${p.pada}</td>
+        <td style="padding: 2px 4px; font-weight: 700; color: #1c1917;">${isTa ? p.nameTa : p.name}${p.isRetrograde ? ' (வ)' : ''}</td>
+        <td style="padding: 2px 4px;">${isTa ? p.rasiNameTa : p.rasiName}</td>
+        <td style="padding: 2px 4px; font-family: monospace;">${p.degreeFormatted}</td>
+        <td style="padding: 2px 4px;">${isTa ? p.nakshatraNameTa : p.nakshatraName}-${p.pada}</td>
       </tr>
     `)
   ].join('');
@@ -123,7 +123,7 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
   <style>
     @page {
       size: A4 portrait !important;
-      margin: 4mm 5mm 4mm 5mm !important;
+      margin: 8mm 10mm 8mm 10mm !important;
     }
     * {
       box-sizing: border-box !important;
@@ -137,18 +137,21 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
       color: #1c1917 !important;
       font-family: 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       font-size: 10px;
-      line-height: 1.2;
+      line-height: 1.25;
+      width: 100% !important;
       height: 100% !important;
       overflow: hidden !important;
     }
     .print-card {
-      width: 198mm !important;
-      max-width: 198mm !important;
-      height: 288mm !important;
-      max-height: 288mm !important;
+      width: 100% !important;
+      max-width: 188mm !important;
+      min-height: 270mm !important;
+      height: 270mm !important;
+      max-height: 270mm !important;
       margin: 0 auto !important;
       border: 2px solid #78350f !important;
-      padding: 4mm 6mm !important;
+      border-radius: 4px !important;
+      padding: 5mm 6mm !important;
       background: #ffffff !important;
       page-break-inside: avoid !important;
       break-inside: avoid !important;
@@ -164,95 +167,100 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
       text-align: center;
       border-bottom: 1.5px solid #b45309;
       padding-bottom: 3px;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
     }
     .title-banner {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 900;
       color: #451a03;
       margin: 1px 0;
       font-family: serif;
+      letter-spacing: 0.5px;
     }
     .grid-info {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 4px;
+      gap: 5px;
       background: #fffbeb;
       border: 1px solid #fde68a;
-      padding: 4px 6px;
+      padding: 5px 8px;
       border-radius: 4px;
       margin-bottom: 4px;
     }
-    .info-lbl { font-size: 8px; color: #78716c; display: block; }
-    .info-val { font-weight: 800; color: #1c1917; font-size: 10px; }
+    .info-lbl { font-size: 8.5px; color: #78716c; display: block; }
+    .info-val { font-weight: 800; color: #1c1917; font-size: 10.5px; }
     .panchang-bar {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 3px;
       text-align: center;
-      background: #f5f5f4;
-      border: 1px solid #e7e5e4;
-      padding: 3px;
-      margin-bottom: 4px;
-      font-size: 8.5px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 4px 6px;
+      border-radius: 4px;
+      margin-bottom: 5px;
+      font-size: 9px;
     }
     .charts-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 4px;
+      gap: 10px;
+      margin-bottom: 5px;
       align-items: center;
     }
     .chart-box-title {
       text-align: center;
       font-weight: 800;
-      font-size: 10px;
+      font-size: 11px;
       color: #78350f;
-      margin-bottom: 2px;
+      margin-bottom: 3px;
+      font-family: serif;
     }
     .bottom-split {
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
-      gap: 8px;
-      border-top: 1px solid #e7e5e4;
-      padding-top: 4px;
+      gap: 10px;
+      border-top: 1.5px solid #b45309;
+      padding-top: 5px;
       flex: 1;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 8.5px;
+      font-size: 9px;
     }
     th {
       background: #fef3c7;
       color: #78350f;
       text-align: left;
-      padding: 1.5px 3px;
+      padding: 2.5px 4px;
       border: 1px solid #fcd34d;
-      font-size: 8px;
+      font-size: 8.5px;
     }
     td {
       border: 1px solid #f5f5f4;
-      padding: 1px 3px;
+      padding: 2px 4px;
     }
     .dasa-box {
       background: #fffbeb;
       border: 1px solid #fcd34d;
-      padding: 4px 6px;
-      border-radius: 3px;
+      padding: 5px 8px;
+      border-radius: 4px;
       margin-bottom: 4px;
     }
     .lucky-box {
       border: 1px solid #e7e5e4;
-      padding: 3px 5px;
-      border-radius: 3px;
+      background: #fafaf9;
+      padding: 5px 8px;
+      border-radius: 4px;
       margin-bottom: 4px;
-      font-size: 8.5px;
+      font-size: 9px;
     }
     .sig-box {
       border: 1px dashed #b45309;
-      padding: 3px 6px;
-      border-radius: 3px;
+      background: #fffdfa;
+      padding: 5px 8px;
+      border-radius: 4px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -282,12 +290,19 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
     }
     @media print {
       .no-print-bar { display: none !important; }
-      body { padding: 0 !important; margin: 0 !important; }
+      html, body {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
       .print-card {
         border: 2px solid #78350f !important;
         margin: 0 auto !important;
-        height: 288mm !important;
-        max-height: 288mm !important;
+        height: 270mm !important;
+        min-height: 270mm !important;
+        max-height: 270mm !important;
       }
     }
   </style>
@@ -300,11 +315,11 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
 
   <div class="print-card">
     <div class="header-seal">
-      <div style="font-weight: 800; font-size: 9px; color: #78350f; letter-spacing: 2px;">
+      <div style="font-weight: 800; font-size: 10px; color: #78350f; letter-spacing: 2px;">
         ${isTa ? '॥ ஸ்ரீ முத்தாலம்மன் துணை ॥' : '॥ Sri Muthalamman Thunai ॥'}
       </div>
       <div class="title-banner">${isTa ? 'மாதவ் ஜோதிட நிலையம்' : 'Madhav Jodhida Nilayam'}</div>
-      <div style="font-weight: 700; font-size: 10px; color: #92400e;">
+      <div style="font-weight: 700; font-size: 10.5px; color: #92400e;">
         ${isTa ? 'மலமஞ்சனூர் பரம்பரை ஜோதிடர் · மனையடி சாஸ்திரம் (வாஸ்து)' : 'Malamanjanur Hereditary Astrologer · Vastu Shastra'}
       </div>
       <div style="font-size: 9px; color: #57534e; margin-top: 2px;">
@@ -316,11 +331,11 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
     <div class="grid-info">
       <div>
         <span class="info-lbl">${isTa ? 'பெயர்:' : 'Name:'}</span>
-        <span class="info-val">${birthData.name}</span>
+        <span class="info-val" style="color: #991b1b; font-size: 11.5px;">${birthData.name}</span>
       </div>
       <div>
         <span class="info-lbl">${isTa ? 'பிறந்த தேதி & நேரம்:' : 'DOB & Time:'}</span>
-        <span class="info-val">${birthData.dob} · ${birthData.tob}</span>
+        <span class="info-val" style="font-family: monospace;">${birthData.dob} · ${birthData.tob}</span>
       </div>
       <div>
         <span class="info-lbl">${isTa ? 'பிறந்த ஊர்:' : 'Birth Place:'}</span>
@@ -334,8 +349,8 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
 
     <!-- Panchangam Bar -->
     <div class="panchang-bar">
-      <div><b>${isTa ? 'லக்னம்' : 'Lagna'}:</b> ${isTa ? lagna.rasiNameTa : lagna.rasiName}</div>
-      <div><b>${isTa ? 'ராசி' : 'Rasi'}:</b> ${isTa ? (horoscope.planets.find(p => p.name === 'Moon')?.rasiNameTa || '') : (horoscope.planets.find(p => p.name === 'Moon')?.rasiName || '')}</div>
+      <div><b>${isTa ? 'லக்னம்' : 'Lagna'}:</b> <span style="color: #991b1b; font-weight: 800;">${isTa ? lagna.rasiNameTa : lagna.rasiName}</span></div>
+      <div><b>${isTa ? 'ராசி' : 'Rasi'}:</b> <span style="color: #991b1b; font-weight: 800;">${isTa ? (horoscope.planets.find(p => p.name === 'Moon')?.rasiNameTa || '') : (horoscope.planets.find(p => p.name === 'Moon')?.rasiName || '')}</span></div>
       <div><b>${isTa ? 'நட்சத்திரம்' : 'Nakshatra'}:</b> ${isTa ? nakshatra.nameTa : nakshatra.name} (${nakshatra.pada})</div>
       <div><b>${isTa ? 'திதி' : 'Thithi'}:</b> ${isTa ? thithi.nameTa : thithi.name}</div>
       <div><b>${isTa ? 'யோகம்' : 'Yoga'}:</b> ${horoscope.yogam.name}</div>
@@ -345,53 +360,62 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
     <!-- Dual Charts -->
     <div class="charts-row">
       <div>
-        <div class="chart-box-title">${isTa ? 'ராசி சக்கரம்' : 'Rasi Chart (D1)'}</div>
+        <div class="chart-box-title">${isTa ? 'ராசி சக்கரம் (D1 Janma Chakra)' : 'Rasi Chart (D1)'}</div>
         ${rasiChartHtml}
       </div>
       <div>
-        <div class="chart-box-title">${isTa ? 'நவாம்ச சக்கரம்' : 'Navamsa Chart (D9)'}</div>
+        <div class="chart-box-title">${isTa ? 'நவாம்ச சக்கரம் (D9 Navamsa Chakra)' : 'Navamsa Chart (D9)'}</div>
         ${navamsaChartHtml}
       </div>
     </div>
 
     <!-- Split Bottom: Planets & Dasa -->
     <div class="bottom-split">
-      <div>
-        <div style="font-weight: 800; font-size: 10px; color: #78350f; margin-bottom: 2px;">
-          ${isTa ? 'கிரக பாதசார அட்டவணை' : 'Planetary Longitudes'}
+      <div style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="font-weight: 800; font-size: 10.5px; color: #78350f; margin-bottom: 2px; font-family: serif;">
+            ${isTa ? 'கிரக பாதசார அட்டவணை (Nirayana Longitudes)' : 'Planetary Longitudes'}
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>${isTa ? 'கிரகம்' : 'Planet'}</th>
+                <th>${isTa ? 'ராசி' : 'Rasi'}</th>
+                <th>${isTa ? 'பாகை' : 'Deg'}</th>
+                <th>${isTa ? 'நட்சத்திரம்' : 'Star-Pada'}</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${planetRowsHtml}
+            </tbody>
+          </table>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>${isTa ? 'கிரகம்' : 'Planet'}</th>
-              <th>${isTa ? 'ராசி' : 'Rasi'}</th>
-              <th>${isTa ? 'பாகை' : 'Deg'}</th>
-              <th>${isTa ? 'நட்சத்திரம்' : 'Star'}</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${planetRowsHtml}
-          </tbody>
-        </table>
+
+        <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 4px; padding: 4px 6px; font-size: 8.5px; line-height: 1.35; color: #451a03; margin-top: 4px;">
+          <b>${isTa ? 'மாதவ் வழிகாட்டுதல்:' : 'Guidance:'}</b> ${isTa ? 'லக்னாதிபதி பலம் பெற்று சுப யோகங்கள் அமைந்துள்ளதால் சகல நன்மைகளும் கூடும். குலதெய்வ வழிபாடு மற்றும் திருவண்ணாமலை கிரிவல தரிசனம் சகல தோஷ நிவர்த்தி தரும்.' : 'Strong planetary alignments indicate domestic harmony and prosperity.'}
+        </div>
       </div>
 
-      <div>
+      <div style="display: flex; flex-direction: column; justify-content: space-between;">
         <div class="dasa-box">
-          <div style="font-weight: 800; font-size: 10px; color: #78350f;">
+          <div style="font-weight: 800; font-size: 10.5px; color: #78350f; font-family: serif;">
             ${isTa ? 'பிறந்த இருப்பு தசாபுத்தி:' : 'Janma Dasa Balance:'}
           </div>
-          <div style="font-size: 9.5px; font-weight: 700; margin-top: 2px;">
+          <div style="font-size: 10.5px; font-weight: 800; color: #991b1b; margin-top: 1px;">
             ${isTa
               ? `${dasaBalance.lordTa} மகா தசை: ${dasaBalance.years} வருடம், ${dasaBalance.months} மாதம், ${dasaBalance.days} நாள்`
               : `${dasaBalance.lord} Dasa: ${dasaBalance.years}y ${dasaBalance.months}m ${dasaBalance.days}d`}
           </div>
-          <div style="font-size: 9.5px; color: #991b1b; font-weight: 800; margin-top: 3px;">
+          <div style="font-size: 8.5px; color: #78716c; margin-top: 1px;">
+            ${dasaBalance.startDate} முதல் ${dasaBalance.endDate} வரை
+          </div>
+          <div style="font-size: 9.5px; color: #065f46; font-weight: 800; margin-top: 2px; border-top: 1px dashed #fcd34d; padding-top: 2px;">
             ${isTa ? 'நடப்பு தசாபுத்தி:' : 'Current Bukthi:'} ${isTa ? `${currentDasaBukthi.dasaLordTa} - ${currentDasaBukthi.bukthiLordTa}` : `${currentDasaBukthi.dasaLord} - ${currentDasaBukthi.bukthiLord}`} (${currentDasaBukthi.endDate} வரை)
           </div>
         </div>
 
         <div class="lucky-box">
-          <div style="font-weight: 800; color: #78350f; margin-bottom: 2px;">${isTa ? 'அதிர்ஷ்டக் குறிப்புகள்:' : 'Auspicious Factors:'}</div>
+          <div style="font-weight: 800; color: #78350f; margin-bottom: 2px; font-size: 9.5px;">${isTa ? 'சுப அதிர்ஷ்டக் குறிப்புகள்:' : 'Auspicious Factors:'}</div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2px;">
             <div>${isTa ? 'ரத்தினம்:' : 'Gem:'} <b>${isTa ? luckyFactors.gemstoneTa : luckyFactors.gemstone}</b></div>
             <div>${isTa ? 'நிறம்:' : 'Color:'} <b>${isTa ? luckyFactors.colorTa : luckyFactors.color}</b></div>
@@ -402,12 +426,15 @@ export function generateKuripuPrintHtml(horoscope: ComputedHoroscope, language: 
 
         <div class="sig-box">
           <div>
-            <div><b>மாதவ் ஜோதிட நிலையம்</b></div>
-            <div style="color: #78716c;">திருவண்ணாமலை</div>
+            <div style="font-weight: 800; color: #451a03; font-size: 9.5px;">மாதவ் ஜோதிட நிலையம்</div>
+            <div style="color: #78716c; font-size: 8px;">மலமஞ்சனூர் பரம்பரை · திருவண்ணாமலை</div>
+          </div>
+          <div style="border: 1px dashed #b45309; border-radius: 50%; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; font-size: 7px; font-weight: 800; color: #78350f; text-align: center;">
+            முத்திரை
           </div>
           <div style="text-align: center;">
-            <div style="font-family: serif; font-style: italic; font-weight: 800; color: #78350f; font-size: 11px;">ஜோதிட ஆலோசகர்</div>
-            <div style="border-top: 1px solid #78716c; padding-top: 1px; font-size: 8px;">கையொப்பம்</div>
+            <div style="font-family: serif; font-style: italic; font-weight: 800; color: #78350f; font-size: 11px;">ராமச்சந்திரன் MA</div>
+            <div style="border-top: 1px solid #78716c; padding-top: 1px; font-size: 7.5px; color: #57534e;">ஜோதிட ஆலோசகர்</div>
           </div>
         </div>
       </div>
@@ -442,13 +469,13 @@ export function generateJadhagamBookPrintHtml(
   const { birthData, lagna, planets, rasiChart, navamsaChart, thithi, vaaram, nakshatra, yogam, karanam, dasaBalance, dasaTimeline, luckyFactors } = horoscope;
 
   const pageSizeCss = isLandscape
-    ? '@page { size: A5 landscape !important; margin: 3mm 4mm !important; }'
+    ? '@page { size: A5 landscape !important; margin: 10mm !important; }'
     : isA4
     ? '@page { size: A4 portrait !important; margin: 5mm 6mm !important; }'
     : '@page { size: A5 portrait !important; margin: 4mm 4mm !important; }';
 
   const pageDimCss = isLandscape
-    ? 'width: 202mm !important; height: 141mm !important; max-height: 141mm !important; min-height: 141mm !important;'
+    ? 'width: 190mm !important; height: 128mm !important; max-height: 128mm !important; min-height: 128mm !important;'
     : isA4
     ? 'width: 198mm !important; height: 284mm !important; max-height: 284mm !important; min-height: 284mm !important;'
     : 'width: 140mm !important; height: 201mm !important; max-height: 201mm !important; min-height: 201mm !important;';
@@ -952,7 +979,7 @@ export function printHtmlViaIframe(htmlContent: string): boolean {
 }
 
 /**
- * Triggers printing using isolated hidden iframe or opens tab if requested
+ * Triggers printing using direct browser print or opens tab if requested
  */
 export function executePrintDocument(
   htmlContent: string,
@@ -976,9 +1003,9 @@ export function executePrintDocument(
       return { success: true, blobUrl };
     }
 
-    // Default: print cleanly through isolated hidden iframe
-    const success = printHtmlViaIframe(htmlContent);
-    return { success, blobUrl };
+    // Direct synchronous native print - trusted and works in all browsers
+    window.print();
+    return { success: true, blobUrl };
   } catch (err) {
     console.warn('executePrintDocument error:', err);
     try {

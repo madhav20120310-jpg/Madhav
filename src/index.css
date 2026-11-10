@@ -12,10 +12,15 @@
 
 /* Print Styles */
 @media print {
+  @page {
+    size: A5 landscape;
+    margin: 10mm;
+  }
+
   html, body {
     background: #ffffff !important;
     color: #1c1917 !important;
-    font-size: 10pt !important;
+    font-size: 9pt !important;
     margin: 0 !important;
     padding: 0 !important;
     height: auto !important;
@@ -48,22 +53,30 @@
     box-sizing: border-box !important;
   }
 
-  /* Multi-page break for Jadhagam book */
+  /* Multi-page break for Jadhagam book strictly constrained to A5 landscape */
   .jadhagam-print-container {
     display: block !important;
     gap: 0 !important;
     margin: 0 !important;
     padding: 0 !important;
+    width: 100% !important;
   }
 
   .jadhagam-page {
+    width: 190mm !important;
+    height: 128mm !important;
+    max-height: 128mm !important;
+    min-height: 128mm !important;
     page-break-after: always !important;
     break-after: page !important;
     page-break-inside: avoid !important;
     break-inside: avoid !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     box-shadow: none !important;
     border: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    display: block !important;
   }
 
   .jadhagam-page:last-child {
